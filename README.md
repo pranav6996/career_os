@@ -52,32 +52,6 @@ Career OS automates job discovery by parsing your resume and simultaneously sear
 - Git
 
 
-
-## 🚀 Running Locally
-
-You need **3 terminals** running simultaneously:
-
-**Terminal 1 - Django Server:**
-```bash
-python manage.py runserver
-```
-
-**Terminal 2 - Celery Worker:**
-```bash
-celery -A core worker --loglevel=info
-```
-
-**Terminal 3 - Redis Server:**
-```bash
-# If installed via Homebrew (Mac)
-brew services start redis
-
-# Or run directly
-redis-server
-```
-
-Visit: **http://localhost:8000**
-
 ## 📚 API Documentation
 
 ### Authentication Endpoints
@@ -132,9 +106,6 @@ Authorization: Token abc123...
 }
 ```
 
-## 🎨 Screenshots
-
-*Add screenshots of your application here*
 
 ## 🏗️ Architecture & Workflows
 
@@ -334,6 +305,13 @@ graph LR
     style Jobs fill:#ec4899,color:#fff
     style Applications fill:#f59e0b,color:#fff
 ```
+
+## 🎨 Screenshots
+
+<img width="2494" height="1152" alt="image" src="https://github.com/user-attachments/assets/a8c6981d-67f2-4f8c-b8f8-35ccb42717d9" />
+<img width="2360" height="1121" alt="image" src="https://github.com/user-attachments/assets/5471094a-0fd6-425a-91c0-2a56c250a504" />
+<img width="2096" height="991" alt="image" src="https://github.com/user-attachments/assets/b2163338-1668-4680-bb1d-10db67e3cdd1" />
+
 ### Setup
 
 1. **Clone the repository**
@@ -373,7 +351,30 @@ python manage.py createsuperuser
 ```bash
 python manage.py collectstatic
 ```
+## 🚀 Running Locally
 
+You need **3 terminals** running simultaneously:
+
+**Terminal 1 - Django Server:**
+```bash
+python manage.py runserver
+```
+
+**Terminal 2 - Celery Worker:**
+```bash
+celery -A core worker --loglevel=info
+```
+
+**Terminal 3 - Redis Server:**
+```bash
+# If installed via Homebrew (Mac)
+brew services start redis
+
+# Or run directly
+redis-server
+```
+
+Visit: **http://localhost:8000**
 ## 📝 Usage
 
 1. **Sign Up** - Create an account at `/signup/`
