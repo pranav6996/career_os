@@ -62,3 +62,10 @@ Thumbs.db
 chromedriver
 geckodriver
 *.crx
+
+# Docker (not using Docker for Railway deployment)
+Dockerfile
+Dockerfile.*
+docker-compose.yml
+docker-compose.*.yml
+.dockerignore
