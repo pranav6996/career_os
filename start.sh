@@ -1,6 +1,9 @@
 #!/bin/bash
 # Startup script - create static dir, run migrations, collect static, start gunicorn
 set -e
+echo "----------------------------------------"
+echo "EXECUTING START.SH"
+echo "----------------------------------------"
 
 echo "Creating staticfiles directory..."
 mkdir -p staticfiles
