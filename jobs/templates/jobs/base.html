@@ -1,0 +1,219 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Career OS - AI-Powered Job Discovery Platform. Upload your resume and find perfect opportunities across LinkedIn, Internshala, and more.">
+    <meta name="keywords" content="job search, resume parser, AI jobs, career, Django, Celery, job scraper">
+    <meta name="author" content="Pranav - Full Stack Developer">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Career OS - AI Job Discovery">
+    <meta property="og:description" content="Upload resume, let AI find your perfect job opportunities">
+    <meta property="og:type" content="website">
+
+    <title>{% block title %}Career OS - AI-Powered Job Discovery{% endblock %}</title>
+
+    <!-- Favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💼</text></svg>">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Critical Inline CSS for Fast Loading -->
+    <style>
+        /* Critical CSS - Loaded inline for instant rendering */
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Ensure page loads with proper styling */
+        .navbar {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'jobs:index' %}" class="nav-brand">
+                <i class="bi bi-stars"></i> Career OS
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="{% url 'jobs:index' %}"
+                        class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}">Home</a>
+                </li>
+                <li><a href="{% url 'jobs:dashboard' %}"
+                        class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a>
+                </li>
+                <li><a href="{% url 'jobs:upload_resume' %}"
+                        class="nav-link {% if request.resolver_match.url_name == 'upload_resume' %}active{% endif %}">Upload</a>
+                </li>
+                <li><a href="{% url 'jobs:job_list' %}"
+                        class="nav-link {% if request.resolver_match.url_name == 'job_list' %}active{% endif %}">Jobs</a>
+                </li>
+
+                {% if user.is_authenticated %}
+                <li style="margin-left: auto; display: flex; align-items: center; gap: 1rem;">
+                    <span style="color: var(--text-secondary);">
+                        <i class="bi bi-person-circle"></i> {{ user.username }}
+                    </span>
+                    <a href="{% url 'jobs:logout' %}" class="btn btn-outline" style="padding: 0.5rem 1rem;">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </a>
+                </li>
+                {% else %}
+                <li style="margin-left: auto; display: flex; gap: 0.5rem;">
+                    <a href="{% url 'jobs:login' %}" class="btn btn-outline" style="padding: 0.5rem 1rem;">
+                        <i class="bi bi-box-arrow-in-right"></i> Login
+                    </a>
+                    <a href="{% url 'jobs:signup' %}" class="btn btn-primary" style="padding: 0.5rem 1rem;">
+                        <i class="bi bi-person-plus"></i> Sign Up
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="message message-{{ message.tags }}">
+            <strong>{{ message.tags|title }}:</strong> {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer with Portfolio Info -->
+    <footer
+        style="margin-top: 4rem; padding: 3rem 0; background: rgba(30, 41, 59, 0.5); border-top: 1px solid rgba(148, 163, 184, 0.1);">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                <!-- About Project -->
+                <div>
+                    <h3
+                        style="font-size: 1.25rem; margin-bottom: 1rem; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                        💼 Career OS
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 0.95rem;">
+                        AI-powered job discovery platform built with Django, Celery, and modern web technologies.
+                        Automatically scrapes and aggregates jobs from multiple platforms.
+                    </p>
+                </div>
+
+                <!-- Tech Stack -->
+                <div>
+                    <h4 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-primary);">Tech Stack</h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                        <span
+                            style="padding: 0.25rem 0.75rem; background: rgba(99, 102, 241, 0.2); border-radius: 8px; font-size: 0.85rem; color: #818cf8;">Python</span>
+                        <span
+                            style="padding: 0.25rem 0.75rem; background: rgba(16, 185, 129, 0.2); border-radius: 8px; font-size: 0.85rem; color: #34d399;">Django</span>
+                        <span
+                            style="padding: 0.25rem 0.75rem; background: rgba(236, 72, 153, 0.2); border-radius: 8px; font-size: 0.85rem; color: #f472b6;">Celery</span>
+                        <span
+                            style="padding: 0.25rem 0.75rem; background: rgba(239, 68, 68, 0.2); border-radius: 8px; font-size: 0.85rem; color: #f87171;">Redis</span>
+                        <span
+                            style="padding: 0.25rem 0.75rem; background: rgba(59, 130, 246, 0.2); border-radius: 8px; font-size: 0.85rem; color: #60a5fa;">PostgreSQL</span>
+                        <span
+                            style="padding: 0.25rem 0.75rem; background: rgba(139, 92, 246, 0.2); border-radius: 8px; font-size: 0.85rem; color: #a78bfa;">Selenium</span>
+                    </div>
+                </div>
+
+                <!-- Developer -->
+                <div>
+                    <h4 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-primary);">Developer</h4>
+                    <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">
+                        <strong style="color: var(--text-primary);">Pranav</strong> - Full Stack Developer
+                    </p>
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <a href="https://github.com/pranav6996" target="_blank"
+                            style="color: var(--text-secondary); text-decoration: none; transition: color 0.2s;"
+                            onmouseover="this.style.color='var(--primary)'"
+                            onmouseout="this.style.color='var(--text-secondary)'">
+                            <i class="bi bi-github" style="font-size: 1.5rem;"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/pranav6996/" target="_blank"
+                            style="color: var(--text-secondary); text-decoration: none; transition: color 0.2s;"
+                            onmouseover="this.style.color='var(--primary)'"
+                            onmouseout="this.style.color='var(--text-secondary)'">
+                            <i class="bi bi-linkedin" style="font-size: 1.5rem;"></i>
+                        </a>
+                        <a href="mailto:pranavnadh6@gmail.com"
+                            style="color: var(--text-secondary); text-decoration: none; transition: color 0.2s;"
+                            onmouseover="this.style.color='var(--primary)'"
+                            onmouseout="this.style.color='var(--text-secondary)'">
+                            <i class="bi bi-envelope" style="font-size: 1.5rem;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Footer -->
+            <div style="text-align: center; padding-top: 2rem; border-top: 1px solid rgba(148, 163, 184, 0.1);">
+                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                    © 2026 Career OS. Built with Django
+                </p>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">
+                    Scrapes from LinkedIn • Internshala • WeWorkRemotely • RemoteOK • Naukri
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

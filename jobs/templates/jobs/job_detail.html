@@ -1,0 +1,147 @@
+{% extends 'jobs/base.html' %}
+{% block title %}{{ job.title }} - Job Scraper{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">{{ job.title }}</h4>
+                <span class="platform-badge platform-{{ job.platform }}">{{ job.get_platform_display }}</span>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <h5><i class="bi bi-building me-2"></i>{{ job.company }}</h5>
+                    <p class="text-muted mb-1">
+                        <i class="bi bi-geo-alt me-2"></i>{{ job.location }}
+                    </p>
+                    <p class="text-muted">
+                        <i class="bi bi-clock me-2"></i>Scraped {{ job.scraped_at|timesince }} ago
+                    </p>
+                </div>
+                
+                {% if job.description %}
+                <div class="mb-4">
+                    <h5>Description</h5>
+                    <p>{{ job.description }}</p>
+                </div>
+                {% endif %}
+                
+                <div class="mb-4">
+                    <h5>Application Link</h5>
+                    <div class="input-group">
+                        <input type="text" class="form-control" value="{{ job.link }}" id="jobLink" readonly>
+                        <button class="btn btn-outline-secondary" type="button" onclick="copyLink()">
+                            <i class="bi bi-clipboard"></i> Copy
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <a href="{{ job.link }}" target="_blank" class="btn btn-primary btn-lg" rel="noopener noreferrer">
+                        <i class="bi bi-box-arrow-up-right me-2"></i>Apply on {{ job.get_platform_display }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <!-- Application Status -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-check2-square me-2"></i>Application Status
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'jobs:update_application_status' job.id %}">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" name="status">
+                            <option value="saved" {% if application.status == 'saved' %}selected{% endif %}>Saved</option>
+                            <option value="applied" {% if application.status == 'applied' %}selected{% endif %}>Applied</option>
+                            <option value="interviewing" {% if application.status == 'interviewing' %}selected{% endif %}>Interviewing</option>
+                            <option value="rejected" {% if application.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                            <option value="accepted" {% if application.status == 'accepted' %}selected{% endif %}>Accepted</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="4" placeholder="Add your notes here...">{{ application.notes }}</textarea>
+                    </div>
+                    
+                    {% if application.applied_at %}
+                    <p class="text-muted small mb-3">
+                        <i class="bi bi-calendar-check me-1"></i>Applied on {{ application.applied_at|date:"M d, Y" }}
+                    </p>
+                    {% endif %}
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-save me-2"></i>Update Status
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Job Info -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-info-circle me-2"></i>Job Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <tr>
+                        <th>Platform:</th>
+                        <td>{{ job.get_platform_display }}</td>
+                    </tr>
+                    <tr>
+                        <th>Location:</th>
+                        <td>{{ job.location }}</td>
+                    </tr>
+                    <tr>
+                        <th>Resume ID:</th>
+                        <td>
+                            <a href="{% url 'jobs:job_list' resume_id=job.resume.id %}">#{{ job.resume.id }}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Scraped:</th>
+                        <td>{{ job.scraped_at|date:"M d, Y H:i" }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-lg-12">
+        <a href="{% url 'jobs:job_list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Back to All Jobs
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyLink() {
+    const linkInput = document.getElementById('jobLink');
+    linkInput.select();
+    linkInput.setSelectionRange(0, 99999); // For mobile devices
+    
+    navigator.clipboard.writeText(linkInput.value).then(() => {
+        alert('Link copied to clipboard!');
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+    });
+}
+</script>
+{% endblock %}

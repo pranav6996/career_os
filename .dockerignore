@@ -1,0 +1,25 @@
+# Docker ignore file
+.git
+.gitignore
+.env
+.venv
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+db.sqlite3
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+README.md
+docs/
+tests/
+*.md
+!requirements.txt

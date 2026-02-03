@@ -1,0 +1,301 @@
+{% extends 'jobs/base.html' %}
+{% load static %}
+
+{% block title %}Career OS - AI-Powered Job Discovery Platform{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero">
+    <div
+        style="display: inline-block; padding: 0.5rem 1.5rem; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 30px; margin-bottom: 1.5rem;">
+        <span style="color: var(--primary); font-weight: 600; font-size: 0.9rem;">
+            <i class="bi bi-stars"></i> AI-Powered Job Discovery
+        </span>
+    </div>
+
+    <h1 class="hero-title">Find Your Dream Job<br />with AI</h1>
+    <p class="hero-subtitle">
+        Upload your resume and let our AI discover the perfect opportunities<br />
+        across 5+ job platforms in seconds
+    </p>
+
+    <div style="margin-top: 2.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="{% url 'jobs:upload_resume' %}" class="btn btn-primary"
+            style="font-size: 1.1rem; padding: 1rem 2.5rem;">
+            <i class="bi bi-cloud-upload"></i> Start Job Hunting
+        </a>
+        <a href="#how-it-works" class="btn btn-outline" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
+            <i class="bi bi-play-circle"></i> See How It Works
+        </a>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-value">{{ total_jobs|default:"0" }}</div>
+            <div class="stat-label"><i class="bi bi-briefcase"></i> Total Jobs Found</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ total_resumes|default:"0" }}</div>
+            <div class="stat-label"><i class="bi bi-file-earmark-text"></i> Resumes Uploaded</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">5</div>
+            <div class="stat-label"><i class="bi bi-globe"></i> Job Platforms</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">&lt;30s</div>
+            <div class="stat-label"><i class="bi bi-lightning"></i> Avg Search Time</div>
+        </div>
+    </div>
+
+    <!-- How It Works Section -->
+    <div id="how-it-works" style="margin-top: 4rem;">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">How It Works</h2>
+            <p style="color: var(--text-secondary); font-size: 1.1rem;">Simple, fast, and powered by AI</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+            <!-- Step 1 -->
+            <div class="card" style="text-align: center;">
+                <div
+                    style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);">
+                    <i class="bi bi-cloud-upload" style="color: white;"></i>
+                </div>
+                <h3 style="font-size: 1.25rem; margin-bottom: 1rem;">Upload Resume</h3>
+                <p style="color: var(--text-secondary);">
+                    Upload your PDF or DOCX resume. Our AI will extract your skills, experience, and preferences.
+                </p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="card" style="text-align: center;">
+                <div
+                    style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, #ec4899, #f97316); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 10px 30px rgba(236, 72, 153, 0.3);">
+                    <i class="bi bi-robot" style="color: white;"></i>
+                </div>
+                <h3 style="font-size: 1.25rem; margin-bottom: 1rem;">AI Analysis</h3>
+                <p style="color: var(--text-secondary);">
+                    Advanced AI analyzes your resume, extracting keywords, skills, and matching job criteria.
+                </p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="card" style="text-align: center;">
+                <div
+                    style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, #10b981, #14b8a6); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);">
+                    <i class="bi bi-search" style="color: white;"></i>
+                </div>
+                <h3 style="font-size: 1.25rem; margin-bottom: 1rem;">Smart Search</h3>
+                <p style="color: var(--text-secondary);">
+                    Simultaneously searches across LinkedIn, Internshala, WeWorkRemotely, RemoteOK, and Naukri.
+                </p>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="card" style="text-align: center;">
+                <div
+                    style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, #8b5cf6, #6366f1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);">
+                    <i class="bi bi-check-circle" style="color: white;"></i>
+                </div>
+                <h3 style="font-size: 1.25rem; margin-bottom: 1rem;">Get Results</h3>
+                <p style="color: var(--text-secondary);">
+                    Receive curated job matches in seconds. Track applications and manage your job hunt dashboard.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div style="margin-top: 4rem;">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Powerful Features</h2>
+            <p style="color: var(--text-secondary); font-size: 1.1rem;">Everything you need for your job search</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+            <div class="card">
+                <div style="display: flex; gap: 1rem;">
+                    <div style="font-size: 2.5rem; color: var(--primary);">
+                        <i class="bi bi-lightning-charge-fill"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 0.5rem;">Lightning Fast</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">
+                            Async processing with Celery ensures instant response times and background job scraping.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="display: flex; gap: 1rem;">
+                    <div style="font-size: 2.5rem; color: var(--secondary);">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 0.5rem;">Secure & Private</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">
+                            Your resume data is encrypted and secure. We never share your information with third
+                            parties.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="display: flex; gap: 1rem;">
+                    <div style="font-size: 2.5rem; color: #10b981;">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 0.5rem;">Application Tracking</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">
+                            Track your application status, add notes, and manage your entire job search in one place.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="display: flex; gap: 1rem;">
+                    <div style="font-size: 2.5rem; color: #f59e0b;">
+                        <i class="bi bi-bar-chart-fill"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 0.5rem;">Analytics Dashboard</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">
+                            Visualize your job search progress with detailed stats and insights.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="display: flex; gap: 1rem;">
+                    <div style="font-size: 2.5rem; color: #8b5cf6;">
+                        <i class="bi bi-collection"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 0.5rem;">Multi-Platform</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">
+                            Searches 5 major job platforms simultaneously - LinkedIn, Internshala, and more.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="display: flex; gap: 1rem;">
+                    <div style="font-size: 2.5rem; color: #14b8a6;">
+                        <i class="bi bi-cpu"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 0.5rem;">AI-Powered Matching</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">
+                            Advanced keyword extraction and intelligent matching algorithms find the best opportunities.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Jobs -->
+    <div style="margin-top: 4rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h2>Recent Opportunities</h2>
+            <a href="{% url 'jobs:job_list' %}" class="btn btn-outline">
+                View All Jobs <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="jobs-grid">
+            {% for job in jobs %}
+            <div class="job-card" onclick="window.location.href='{% url 'jobs:job_detail' job.id %}'">
+                <div class="job-header">
+                    <div>
+                        <h3 class="job-title">{{ job.title }}</h3>
+                        <p class="job-company"><i class="bi bi-building"></i> {{ job.company }}</p>
+                    </div>
+                    <span class="job-badge badge-{{ job.platform }}">{{ job.platform }}</span>
+                </div>
+                <div class="job-location">
+                    <i class="bi bi-geo-alt"></i> {{ job.location }}
+                </div>
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--glass-border);">
+                    <small style="color: var(--text-muted);">
+                        <i class="bi bi-clock"></i> {{ job.scraped_at|timesince }} ago
+                    </small>
+                </div>
+            </div>
+            {% empty %}
+            <div class="card" style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">
+                    <i class="bi bi-briefcase" style="color: var(--text-muted);"></i>
+                </div>
+                <h3 style="margin-top: 1rem; color: var(--text-secondary);">No jobs yet</h3>
+                <p style="color: var(--text-muted); margin-bottom: 2rem;">
+                    Upload your resume to start discovering amazing opportunities!
+                </p>
+                <a href="{% url 'jobs:upload_resume' %}" class="btn btn-primary">
+                    <i class="bi bi-upload"></i> Upload Resume Now
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Tech Stack Showcase -->
+    <div class="card"
+        style="margin-top: 4rem; text-align: center; background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(236, 72, 153, 0.05));">
+        <h2 style="margin-bottom: 2rem;">Built with Modern Technology</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+            <div>
+                <div style="font-size: 3rem; margin-bottom: 0.5rem; color: #3776ab;">
+                    <i class="bi bi-code-slash"></i>
+                </div>
+                <div style="font-weight: 600; color: var(--text-primary);">Python & Django</div>
+                <div style="font-size: 0.875rem; color: var(--text-muted);">Backend Framework</div>
+            </div>
+            <div>
+                <div style="font-size: 3rem; margin-bottom: 0.5rem; color: #ec4899;">
+                    <i class="bi bi-diagram-3"></i>
+                </div>
+                <div style="font-weight: 600; color: var(--text-primary);">Celery & Redis</div>
+                <div style="font-size: 0.875rem; color: var(--text-muted);">Async Task Queue</div>
+            </div>
+            <div>
+                <div style="font-size: 3rem; margin-bottom: 0.5rem; color: #10b981;">
+                    <i class="bi bi-database"></i>
+                </div>
+                <div style="font-weight: 600; color: var(--text-primary);">PostgreSQL</div>
+                <div style="font-size: 0.875rem; color: var(--text-muted);">Database</div>
+            </div>
+            <div>
+                <div style="font-size: 3rem; margin-bottom: 0.5rem; color: #8b5cf6;">
+                    <i class="bi bi-browser-chrome"></i>
+                </div>
+                <div style="font-weight: 600; color: var(--text-primary);">Selenium</div>
+                <div style="font-size: 0.875rem; color: var(--text-muted);">Web Automation</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="card"
+        style="margin-top: 3rem; text-align: center; background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1)); border: 2px solid rgba(99, 102, 241, 0.2);">
+        <h2 style="font-size: 2rem; margin-bottom: 1rem;">Ready to Find Your Dream Job?</h2>
+        <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 2rem;">
+            Join others who found their perfect opportunities with Career OS
+        </p>
+        <a href="{% url 'jobs:upload_resume' %}" class="btn btn-primary"
+            style="font-size: 1.2rem; padding: 1.25rem 3rem;">
+            <i class="bi bi-rocket-takeoff"></i> Get Started Now
+        </a>
+    </div>
+</div>
+{% endblock %}
