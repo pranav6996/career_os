@@ -7,6 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-local-dev-key-change-in-production')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = ['*']  # Accept all hosts for now
+CSRF_TRUSTED_ORIGINS = ['https://*.up.railway.app']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -51,21 +52,11 @@ TEMPLATES = [
 ]
 
 # DATABASE - Simple PostgreSQL or SQLite
-DATABASE_URL = os.environ.get('DATABASE_URL', '')
+import dj_database_url
 
-if 'postgres' in DATABASE_URL:
-    # Parse PostgreSQL URL manually
-    import urllib.parse as urlparse
-    url = urlparse.urlparse(DATABASE_URL)
+if 'DATABASE_URL' in os.environ:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': url.path[1:],
-            'USER': url.username,
-            'PASSWORD': url.password,
-            'HOST': url.hostname,
-            'PORT': url.port or 5432,
-        }
+        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
     }
 else:
     # SQLite for local development
@@ -79,7 +70,10 @@ else:
 # STATIC FILES - Simple
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = []
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
