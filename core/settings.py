@@ -3,9 +3,10 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key')
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
+# SIMPLE settings - no fancy stuff
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-local-dev-key-change-in-production')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = ['*']  # Accept all hosts for now
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -30,6 +31,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+ROOT_URLCONF = 'core.urls'
+WSGI_APPLICATION = 'core.wsgi.application'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -46,16 +50,12 @@ TEMPLATES = [
     },
 ]
 
-ROOT_URLCONF = 'core.urls'
-WSGI_APPLICATION = 'core.wsgi.application'
+# DATABASE - Simple PostgreSQL or SQLite
+DATABASE_URL = os.environ.get('DATABASE_URL', '')
 
-# Database configuration
-import urllib.parse as urlparse
-
-DATABASE_URL = os.environ.get('DATABASE_URL')
-
-if DATABASE_URL:
-    # Parse DATABASE_URL manually - no external dependencies
+if 'postgres' in DATABASE_URL:
+    # Parse PostgreSQL URL manually
+    import urllib.parse as urlparse
     url = urlparse.urlparse(DATABASE_URL)
     DATABASES = {
         'default': {
@@ -68,7 +68,7 @@ if DATABASE_URL:
         }
     }
 else:
-    # Development: SQLite
+    # SQLite for local development
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -76,89 +76,30 @@ else:
         }
     }
 
-
+# STATIC FILES - Simple
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-# Don't check if directory exists - just use empty list if not needed
 STATICFILES_DIRS = []
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-LOGS_DIR = BASE_DIR / 'logs'
-if not os.path.exists(LOGS_DIR):
-    os.makedirs(LOGS_DIR)
-
-# Celery Configuration
-CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
+# CELERY - Simple Redis config
+REDIS_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'UTC'
-CELERY_TASK_TRACK_STARTED = True
-CELERY_TASK_TIME_LIMIT = 30 * 60  # 30 minutes max per task
 
-# Internationalization
+# BASIC Django settings
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Allowed file upload extensions
-ALLOWED_RESUME_EXTENSIONS = ['.pdf', '.docx']
-MAX_RESUME_SIZE = 5 * 1024 * 1024  # 5MB
-
-# Job scraping settings
-JOB_SCRAPING_SETTINGS = {
-    'JOBS_PER_PLATFORM': 2,
-    'DEFAULT_LOCATION': 'India',
-    'SCRAPING_DELAY': 1,  # seconds between platforms
-    'USE_HEADLESS_BROWSER': True,
-    'PLATFORMS': [
-        'linkedin',
-        'internshala',
-        'weworkremotely',
-        'remoteok',
-        'naukri',
-    ]
-}
-
-# Logging configuration
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
-            'style': '{',
-        },
-    },
-    'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': LOGS_DIR / 'job_scraper.log',
-            'formatter': 'verbose',
-        },
-        'console': {
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-        },
-    },
-    'loggers': {
-        'jobs': {
-            'handlers': ['file', 'console'],
-            'level': 'INFO',
-            'propagate': True,
-        },
-    },
-}
-
-# Django REST Framework Configuration
+# REST Framework - minimal config
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
@@ -167,15 +108,19 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20,
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
-    ],
 }
 
-# Login/Logout URLs
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+# LOGGING - minimal
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}
